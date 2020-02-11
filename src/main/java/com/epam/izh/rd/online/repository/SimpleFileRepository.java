@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class SimpleFileRepository implements FileRepository {
@@ -90,11 +91,10 @@ public class SimpleFileRepository implements FileRepository {
      */
     @Override
     public boolean createFile(String path, String name) {
+        Path filePath = Paths.get("target/test-classes/" + path + "/" + name);
         try {
-            File file = new File(path + "/" + name);
-            file.mkdirs();
-            file.createNewFile();
-            return file.exists();
+            Files.createDirectories(filePath.getParent());
+            Files.createFile(filePath);
         } catch (IOException e) {
             e.printStackTrace();
         }
